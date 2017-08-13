@@ -1,0 +1,32 @@
+{
+  "name": "dot-on-map",
+  "version": "1.0.0",
+  "description": "Dot On Map",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/denver/dot-on-map.git"
+  },
+  "keywords": [
+    "geoJSON",
+    "twilio",
+    "express"
+  ],
+  "author": "denver",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/denver/dot-on-map/issues"
+  },
+  "homepage": "https://github.com/denver/dot-on-map#readme",
+  "dependencies": {
+    "Express": "^3.0.1",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.4",
+    "leaflet": "^1.1.0",
+    "request": "^2.81.0",
+    "twilio": "^3.5.0"
+  }
+}

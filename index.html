@@ -1,0 +1,125 @@
+<DOCTYPE! html>
+<html>
+<head>
+  <title>World Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./leaflet.css" />
+  <link href="./config/config.json">
+  <script src="./leaflet.js"></script>
+  <script src="./js/areaCode.js"></script>
+  <!-- <script src="./js/dot.js"></script> -->
+  <script src="jquery-3.1.1.min.js"></script>
+
+  <style>
+		#map {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <script>
+    var cities = new L.LayerGroup();
+
+    var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+          '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+
+    var grayscale = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+        streets = L.tileLayer(mbUrl, {id: 'mapbox.streets',
+        attribution: mbAttr});
+
+    var map = L.map('map', {
+      center: [37.07309, -94.89087],
+      zoom: 4.80,
+      layers: [grayscale, cities]
+    });
+
+    var baseLayers = {
+      "Grayscale": grayscale,
+      "Streets": streets
+    };
+
+    var overlays = {
+      "Cities": cities
+    };
+
+    L.control.layers(baseLayers, overlays).addTo(map);
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(map);
+    }
+
+    map.on('click', onMapClick);
+
+    var dots = [];
+
+    function renderTime() {
+      cities.clearLayers();
+
+      $.get("http://53136503.ngrok.io/dots", function(res, status, xhr) {
+        // let dots = res.body;
+        console.log(res);
+        // dot(res[0]);
+        dots.push(res);
+        allDots(res)
+        //var x = dotFilter(dots);
+        // console.log(x);
+        // dots.forEach( dot(self)=>{
+        //   console.log(self);
+        // })
+        // map.removeLayer(cities);
+
+      });
+
+
+
+//const dotFilter = (x) => { console.log(x.filter())}
+var dotFilter = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+
+var allDots = function(array) {
+  array.forEach((self)=> {
+    console.log('self',self);
+    var y = self.substring(2,5);
+    try {
+          L.marker( [ areaCode[y].location.latitude , areaCode[y].location.longitude ] ).bindPopup(areaCode[y].city ).addTo(cities);
+          console.log("area code=",self,areaCode[y].city)
+        }
+        catch(err) {
+          console.log("That's not a valid area code.");
+        }
+    });
+  }
+
+
+    var dot = function ( self ) {
+      try {
+            var x = self.substring(2,5);
+            console.log(x);
+            L.marker( [ areaCode[x].location.latitude , areaCode[x].location.longitude ] ).bindPopup(areaCode[x].city ).addTo(cities);
+            console.log("area code=",x,areaCode[x].city)
+          }
+          catch(err) {
+            console.log("That's not a valid area code.");
+          }
+      };
+      // console.log('cities:',cities);
+
+      // var currentTime = new Date();
+      setTimeout('renderTime()', 1000);
+    }
+    renderTime();
+  </script>
+</body>
+</html>
