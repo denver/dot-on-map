@@ -1,5 +1,5 @@
 # dot-on-map
-Example Express App using Twilio and Mapbox to put a dot on map
+Example Express App using Twilio and Leaflet to put a dot on map
 
 ## Requirements
 
