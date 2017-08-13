@@ -5,7 +5,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./leaflet.css" />
-  <link href="./config/config.json">
   <script src="./leaflet.js"></script>
   <script src="./js/areaCode.js"></script>
   <!-- <script src="./js/dot.js"></script> -->
@@ -68,7 +67,7 @@
     function renderTime() {
       cities.clearLayers();
 
-      $.get("http://53136503.ngrok.io/dots", function(res, status, xhr) {
+      $.get("http://localhost:3000/dots", function(res, status, xhr) {
         // let dots = res.body;
         console.log(res);
         // dot(res[0]);
